@@ -117,11 +117,11 @@ export class Transition implements IHookRegistry {
   is(compare: (Transition|{to: any, from: any})) {
     if (compare instanceof Transition) {
       // TODO: Also compare parameters
-      return this.is({to: compare.$to().name, from: compare.$from().name});
+      return this.is({ to: compare.$to().name, from: compare.$from().name });
     }
     return !(
-        (compare.to && !matchState(this.$to(), compare.to)) ||
-        (compare.from && !matchState(this.$from(), compare.from))
+      (compare.to && !matchState(this.$to(), compare.to)) ||
+      (compare.from && !matchState(this.$from(), compare.from))
     );
   }
 
@@ -233,7 +233,7 @@ export class Transition implements IHookRegistry {
    * @returns {Transition} Returns a new `Transition` instance.
    */
   redirect(targetState: TargetState): Transition {
-    let newOptions = extend({}, this.options(), targetState.options(), { previous: this} );
+    let newOptions = extend({}, this.options(), targetState.options(), { previous: this });
     targetState = new TargetState(targetState.identifier(), targetState.$state(), targetState.params(), newOptions);
     return new Transition(this._treeChanges.from, targetState);
   }
