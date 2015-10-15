@@ -212,7 +212,17 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate)
               name            = getUiViewName(scope, attrs, $element, $interpolate),
               previousLocals  = name && $state.$current && $state.$current.locals[name];
 
-          if (!firstTime && previousLocals === latestLocals) return; // nothing to do
+          var sameLocals = false;
+          if (previousLocals === latestLocals) {
+            sameLocals = true;
+          }
+          else {
+            if (latestLocals && latestLocals.$$controller === previousLocals.$$controller) {
+              sameLocals = true;
+            }
+          }
+          if (!firstTime && sameLocals) return; // nothing to do
+
           newScope = scope.$new();
           latestLocals = $state.$current.locals[name];
 

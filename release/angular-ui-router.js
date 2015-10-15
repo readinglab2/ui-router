@@ -1,6 +1,6 @@
 /**
  * State-based routing for AngularJS
- * @version v0.2.15
+ * @version v0.2.15-dev-2015-10-15
  * @link http://angular-ui.github.com/
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -3952,7 +3952,17 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate)
               name            = getUiViewName(scope, attrs, $element, $interpolate),
               previousLocals  = name && $state.$current && $state.$current.locals[name];
 
-          if (!firstTime && previousLocals === latestLocals) return; // nothing to do
+          var sameLocals = false;
+          if (previousLocals === latestLocals) {
+            sameLocals = true;
+          }
+          else {
+            if (latestLocals && latestLocals.$$controller === previousLocals.$$controller) {
+              sameLocals = true;
+            }
+          }
+          if (!firstTime && sameLocals) return; // nothing to do
+
           newScope = scope.$new();
           latestLocals = $state.$current.locals[name];
 
